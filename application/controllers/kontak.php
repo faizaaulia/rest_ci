@@ -12,6 +12,7 @@ class Kontak extends REST_Controller {
 		$this->load->database();
 	}
 
+	//menampilkan data
 	public function index_get()
 	{
 		$id = $this->get('id');
@@ -24,6 +25,7 @@ class Kontak extends REST_Controller {
 		$this->response($kontak, 200);
 	}
 
+	//menambah data baru
 	public function index_post()
 	{
 		$data = array(
@@ -33,7 +35,25 @@ class Kontak extends REST_Controller {
 		);
 		$insert = $this->db->insert('telepon', $data);
 		if ($insert) {
-			$this->response($kontak, 200);
+			$this->response($data, 200);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
+
+	//mengubah data
+	public function index_put()
+	{
+		$id = $this->put('id');
+		$data = array(
+			'id'	=> $this->put('id'),
+			'nama'	=> $this->put('nama'),
+			'nomor'	=> $this->put('nomor')
+		);
+		$this->db->where('id', $id);
+		$update = $this->db->update('telepon', $data);
+		if ($update) {
+			$this->response($data, 200);
 		} else {
 			$this->response(array('status' => 'fail', 502));
 		}
